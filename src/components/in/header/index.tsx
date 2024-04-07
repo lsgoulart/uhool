@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -81,6 +82,8 @@ export default async function Header() {
           {/* <Button variant="outline" size="icon">
             <Bell className="h-4 w-4" />
           </Button> */}
+
+          <ModeToggle />
 
           <Separator orientation="vertical" className="h-6" />
 
