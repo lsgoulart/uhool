@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { currentUser } from "@clerk/nextjs";
 import { AwardIcon } from "lucide-react";
 import Image from "next/image";
 
@@ -31,10 +32,21 @@ const ProductCard = () => {
   )
 }
 
-export default function PrivatePage () {
+export default async function PrivatePage () {
+  const user = await currentUser()
+
   return (
     <div className="min-h-screen w-full max-w-screen-xl m-auto">
-      <h1 className="text-2xl font-bold mb-10">Produtos disponíveis</h1>
+      <div className="flex justify-between items-center mb-12">
+        <h1 className="text-2xl font-bold">Olá, {user?.firstName}</h1>
+        <div className="flex gap-2 items-center">
+          <p className="text-sm text-muted-foreground">Pontos disponíveis:</p>
+          <p className="text-md text-foreground font-bold flex items-center gap-2">
+            <AwardIcon size={16} className="text-primary" /> 
+            {user?.publicMetadata?.points}
+          </p>
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
         {Array.from({ length: 16 }).map((_, i) => (

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserButton, currentUser } from '@clerk/nextjs';
-import { AwardIcon, Menu, Package2, TrophyIcon } from "lucide-react";
+import { Menu, Package2, TrophyIcon } from "lucide-react";
 import Link from "next/link";
 
 const menuItems = [
@@ -12,6 +12,15 @@ const menuItems = [
     label: 'Página inicial',
     link: '/in',
     active: true,
+    permissions: ['admin', 'user']
+  },
+
+  {
+    id: 2,
+    label: 'Usuários',
+    link: '/in/users',
+    active: false,
+    permissions: ['admin']
   }
 ]
 
@@ -19,7 +28,7 @@ export default async function Header() {
   const user = await currentUser()
 
   return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link href="/in" className="flex items-center gap-2 text-lg font-semibold md:text-base">
           <TrophyIcon size={20} className="text-primary-foreground" />
@@ -28,7 +37,7 @@ export default async function Header() {
 
         <Separator orientation="vertical" className="h-6" />
 
-        {menuItems.map((item) => (
+        {menuItems.filter((item: any) => item.permissions.includes(user?.publicMetadata.role)).map((item) => (
           <Link
             key={`menu_item_${item.id}`}
             href={item.link}
@@ -75,14 +84,6 @@ export default async function Header() {
 
       <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="ml-auto flex gap-8 items-center">
-          <div className="flex gap-2 items-center">
-            <AwardIcon size={16} className="text-primary" /> 
-            <span className="font-bold">135</span>
-          </div>
-          {/* <Button variant="outline" size="icon">
-            <Bell className="h-4 w-4" />
-          </Button> */}
-
           <ModeToggle />
 
           <Separator orientation="vertical" className="h-6" />
